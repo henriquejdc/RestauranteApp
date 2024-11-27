@@ -1,9 +1,12 @@
-### Basic Project with NodeJS + Express (PostgreSQL) and Expo
+### Basic Project with NodeJS + Express (PostgreSQL)
+
+**Necessário ter os dados do postgres no .env e o banco restaurantedb criado"
 
 ### Run project Backend:
 ```
 cd back-end
 npm install
+npx sequelize-cli db:migrate --config config/config.cjs
 node server.js
 ```
 

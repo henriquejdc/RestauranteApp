@@ -1,8 +1,10 @@
 -- Create the database
-CREATE DATABASE restaurante;
+CREATE DATABASE restaurantedb;
 
 -- Use the database
-USE restaurante;
+USE restaurantedb;
+
+-- Pode fazer por aqui ou pelas migrações
 
 -- Tabela de Usuários
 CREATE TABLE usuario (
@@ -48,3 +50,35 @@ CREATE TABLE ordem_producao (
     status VARCHAR(20) NOT NULL CHECK (status IN ('pendente', 'em_producao', 'pronto', 'entregue')),
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE OR REPLACE FUNCTION marcar_mesa_ocupada()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE mesas
+    SET status = 'ocupada'
+    WHERE id = NEW.mesa_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_comanda_create
+AFTER INSERT ON comanda
+FOR EACH ROW
+EXECUTE FUNCTION marcar_mesa_ocupada();
+
+CREATE OR REPLACE FUNCTION marcar_mesa_livre()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.status = 'fechada' AND OLD.status != 'fechada' THEN
+        UPDATE mesas
+        SET status = 'livre'
+        WHERE id = NEW.mesa_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_comanda_close
+AFTER UPDATE ON comanda
+FOR EACH ROW
+EXECUTE FUNCTION marcar_mesa_livre();

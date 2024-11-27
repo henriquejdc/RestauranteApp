@@ -10,6 +10,7 @@ import autenticarJWT from "./middleware/authMiddleware.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig.js"; 
 import "./model/Associacoes.js";
+import './utils/cron.js'; 
 
 const app = express();
 app.use(express.json());

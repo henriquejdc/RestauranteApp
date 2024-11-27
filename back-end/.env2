@@ -1,6 +1,6 @@
 SECRET_KEY=KEYTESTE123
 
-DB_NAME=restaurante
+DB_NAME=restaurantedb
 DB_USER=postgres
 DB_PASSWORD=postgrespw
 DB_HOST=localhost
