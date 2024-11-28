@@ -1,7 +1,7 @@
 import { Op } from "sequelize";
-import comanda from "../model/Comanda.js";
-import ordemProducao from "../model/OrdemProducao.js";
-import itemCardapio from "../model/ItemCardapio.js";
+import comanda from "../models/Comanda.js";
+import ordemProducao from "../models/OrdemProducao.js";
+import itemCardapio from "../models/ItemCardapio.js";
 
 /**
  * @swagger

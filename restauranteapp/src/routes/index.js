@@ -5,6 +5,8 @@ import Welcome from "../pages/Welcome";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
+import Cliente from "../pages/Cliente";
+import FecharComanda from "../pages/FecharComanda";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,6 +57,16 @@ export function Routes() {
             <Stack.Screen
                 name="Home"
                 component={RoutesBottom}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Cliente"
+                component={Cliente}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Fechar Comanda"
+                component={FecharComanda}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

@@ -49,6 +49,7 @@ export default function Login() {
     if (response.status === 200) {
       const json = await response.json();
       await AsyncStorage.setItem('token', json.token)
+      await AsyncStorage.setItem('user', json.user)
 
       if (isChecked) {
         await AsyncStorage.setItem('email', email)

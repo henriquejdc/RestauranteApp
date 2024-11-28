@@ -41,9 +41,11 @@ export const postMesa = async (numero,  status) => {
     })
 }
 
-export const getMesas = async () => {
+export const getMesas = async (status) => {
+    const url = `${API_URL}/mesas${status ? `?status=${status}` : ''}`
+
     return fetch(
-        `${API_URL}/mesas`,{
+        url,{
         method: 'GET',
         headers: {
             'Accept': 'application/json',

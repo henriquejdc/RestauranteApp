@@ -27,7 +27,7 @@ export const putComandaFechar = async (id) => {
     })
 }
 
-export const postComanda = async (mesa_id) => {
+export const postComanda = async (mesa_id, usuario_id) => {
     return fetch(`${API_URL}/comandas`, {
         method: 'POST',
         headers: {
@@ -36,6 +36,7 @@ export const postComanda = async (mesa_id) => {
             'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
         },
         body: JSON.stringify({
+            'usuario_id': usuario_id,
             'mesa_id': mesa_id,
         })
     })

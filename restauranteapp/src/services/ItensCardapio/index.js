@@ -28,9 +28,11 @@ export const postItensCardipio = async (nome, categoria, preco) => {
     })
 }
 
-export const getItensCardipio = async () => {
+export const getItensCardipio = async (categoria) => {
+    const url = `${API_URL}/itens-cardapio${categoria ? `?categoria=${categoria}` : ''}`
+
     return fetch(
-        `${API_URL}/itens-cardapio`,{
+        url,{
         method: 'GET',
         headers: {
             'Accept': 'application/json',

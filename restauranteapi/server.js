@@ -9,7 +9,7 @@ import vendas from "./controller/Vendas.js";
 import autenticarJWT from "./middleware/authMiddleware.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig.js"; 
-import "./model/Associacoes.js";
+import "./models/Associacoes.js";
 import './utils/cron.js'; 
 
 const app = express();

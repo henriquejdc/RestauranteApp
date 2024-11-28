@@ -1,4 +1,4 @@
-import mesa from "../model/Mesa.js";
+import mesa from "../models/Mesa.js";
 
 /**
  * @swagger
@@ -7,6 +7,14 @@ import mesa from "../model/Mesa.js";
  *     summary: Lista todas as mesas.
  *     description: Retorna todas as mesas cadastradas.
  *     tags: [Mesas]
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         required: false
+ *         description: Categoria ('livre' ou 'ocupada').
+ *         schema:
+ *           type: string
+ *           enum: [livre, ocupada]
  *     responses:
  *       200:
  *         description: Lista de mesas.
@@ -28,7 +36,21 @@ import mesa from "../model/Mesa.js";
  */
 async function listar(req, res) {
     try {
-        const mesas = await mesa.findAll();
+        const { status } = req.query;
+
+        if (!status) {
+            const mesas = await mesa.findAll();
+            return res.status(200).json(mesas);
+        }
+
+        if (!["livre", "ocupada"].includes(status)) {
+            return res.status(400).send("Status inválido. Use 'livre' ou 'ocupada'.");
+        }
+
+        const mesas = await mesa.findAll({
+            where: { status },
+        });
+
         res.status(200).json(mesas);
     } catch (error) {
         res.status(500).json({ error: error.message });

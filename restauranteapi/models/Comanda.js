@@ -12,6 +12,10 @@ const Comanda = banco.define("comanda", {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    usuario_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
     status: {
         type: Sequelize.ENUM("aberta", "fechada"),
         defaultValue: "aberta",

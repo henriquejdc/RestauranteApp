@@ -1,4 +1,4 @@
-import itemCardapio from "../model/ItemCardapio.js";
+import itemCardapio from "../models/ItemCardapio.js";
 
 /**
  * @swagger
@@ -7,6 +7,14 @@ import itemCardapio from "../model/ItemCardapio.js";
  *     summary: Lista todos os itens do cardápio.
  *     description: Retorna todos os itens cadastrados no cardápio.
  *     tags: [Itens do Cardápio]
+ *     parameters:
+ *       - in: query
+ *         name: categoria
+ *         required: false
+ *         description: Categoria ('prato' ou 'bebida').
+ *         schema:
+ *           type: string
+ *           enum: [prato, bebida]
  *     responses:
  *       200:
  *         description: Lista de itens do cardápio.
@@ -35,7 +43,20 @@ import itemCardapio from "../model/ItemCardapio.js";
  */
 async function listar(req, res) {
     try {
-        const itens = await itemCardapio.findAll();
+        const { categoria } = req.query;
+
+        if (!categoria) {
+            const itens = await itemCardapio.findAll();
+            return res.status(200).json(itens);
+        }
+        
+        if (!["prato", "bebida"].includes(categoria)) {
+            return res.status(400).send("Categoria inválido. Use 'prato' ou 'bebida'.");
+        }
+
+        const itens = await itemCardapio.findAll({
+            where: { categoria },
+        });
         res.status(200).json(itens);
     } catch (error) {
         res.status(500).json({ error: error.message });

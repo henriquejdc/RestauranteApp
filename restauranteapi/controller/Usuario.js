@@ -1,4 +1,4 @@
-import usuario from "../model/Usuario.js";
+import usuario from "../models/Usuario.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -40,6 +40,9 @@ const SECRET_KEY = process.env.SECRET_KEY;
  *                 token:
  *                   type: string
  *                   description: Token JWT gerado.
+ *                 usuario:
+ *                   type: integer
+ *                   description: Id do usuário.
  *       401:
  *         description: Credenciais inválidas (email ou senha incorretos).
  *       500:
@@ -55,8 +58,8 @@ async function autenticar(req, res) {
         const senhaValida = await bcrypt.compare(senha, user.senha_hash);
         if (!senhaValida) return res.status(401).send("Senha inválida.");
 
-        const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: "2h" });
-        res.status(200).json({ token });
+        const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: "7d" });
+        res.status(200).json({ "user": user.id, "token": token });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

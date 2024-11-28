@@ -1,6 +1,7 @@
-import comanda from "../model/Comanda.js";
-import ordemProducao from "../model/OrdemProducao.js";
-import itemCardapio from "../model/ItemCardapio.js";
+import comanda from "../models/Comanda.js";
+import ordemProducao from "../models/OrdemProducao.js";
+import itemCardapio from "../models/ItemCardapio.js";
+import mesa from "../models/Mesa.js";
 import { Sequelize } from "sequelize";
 
 /**
@@ -20,6 +21,10 @@ import { Sequelize } from "sequelize";
  *               mesa_id:
  *                 type: integer
  *                 description: ID da mesa associada à comanda.
+ *                 example: 1
+ *               usuario_id:
+ *                 type: integer
+ *                 description: ID do usuário associado à comanda.
  *                 example: 1
  *     responses:
  *       201:
@@ -45,12 +50,15 @@ import { Sequelize } from "sequelize";
  */
 async function abrir(req, res) {
     try {
-        const { mesa_id } = req.body;
+        const { mesa_id, usuario_id } = req.body;
 
-        if (!mesa_id) {
-            return res.status(400).json({ error: "O campo 'mesa_id' é obrigatório." });
+        if (!mesa_id || !usuario_id) {
+            return res.status(400).json({ error: "O campo 'mesa_id' e 'usuario_id' é obrigatório." });
         }
-        const novaComanda = await comanda.create({ mesa_id: req.body.mesa_id });
+        const novaComanda = await comanda.create({ 
+            mesa_id: mesa_id, 
+            usuario_id: usuario_id
+        });
         res.status(201).json(novaComanda);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -265,6 +273,7 @@ async function buscarPorId(req, res) {
             totalComanda += totalItem;
 
             return {
+                id: ordem.id,
                 item_id: ordem.item_cardapio.id,
                 nome_item: ordem.item_cardapio.nome,
                 quantidade: ordem.quantidade,
@@ -273,9 +282,11 @@ async function buscarPorId(req, res) {
             };
         });
 
+        const mesaEncontrada = await mesa.findByPk(comandaEncontrada.mesa_id);
+
         res.status(200).json({
             id: comandaEncontrada.id,
-            mesa_id: comandaEncontrada.mesa_id,
+            mesa_id: mesaEncontrada.numero,
             status: comandaEncontrada.status,
             aberto_em: comandaEncontrada.aberto_em,
             fechado_em: comandaEncontrada.fechado_em,

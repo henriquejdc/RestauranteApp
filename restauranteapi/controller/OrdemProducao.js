@@ -1,5 +1,5 @@
-import ordemProducao from "../model/OrdemProducao.js";
-import itemCardapio from "../model/ItemCardapio.js";
+import ordemProducao from "../models/OrdemProducao.js";
+import itemCardapio from "../models/ItemCardapio.js";
 
 /**
  * @swagger
