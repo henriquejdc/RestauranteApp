@@ -1,8 +1,8 @@
 ### Basic Project with NodeJS + Express (PostgreSQL) and Expo
 
-### Run project Backend:
+### Run project Api:
 ```
-cd back-end
+cd restauranteapi
 npm install
 node server.js
 ```
@@ -10,12 +10,13 @@ node server.js
 ### Documentation
 http://localhost:3000/api-docs
 
-**Veja a documentação do README do back-end**
+**Veja a documentação do README do restauranteapi**
 
 
-### Run project Frontend:
+### Run project App:
 ```
-cd front-end
+cd restauranteapp
+npm install -g expo-cli.
 npm install
-npm start
+npx expo start or expo start
 ```

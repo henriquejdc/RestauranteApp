@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "Portal do Aluno UFFS",
+    "slug": "restauranteapp",
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/ico.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash/drawable-hdpi/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "enabled": false,
+      "checkAutomatically": "ON_ERROR_RECOVERY",
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/d59c0b44-37cc-4caf-aae3-02a98e20ecc8"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mascdriver.portalaluno"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/ico.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.mascdriver.portalaluno",
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "favicon": "./assets/ico-uffs.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d59c0b44-37cc-4caf-aae3-02a98e20ecc8"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  }
+}

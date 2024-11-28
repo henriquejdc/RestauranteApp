@@ -2,9 +2,9 @@
 
 **Necessário ter os dados do postgres no .env e o banco restaurantedb criado"
 
-### Run project Backend:
+### Run project Api:
 ```
-cd back-end
+cd restauranteapi
 npm install
 npx sequelize-cli db:migrate --config config/config.cjs
 node server.js
