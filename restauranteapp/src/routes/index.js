@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import  Ionicons  from '@expo/vector-icons/Ionicons'
 import Welcome from "../pages/Welcome";
 import SignIn from "../pages/SignIn";
+import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Matriz from "../pages/Matriz";
 
@@ -30,17 +31,6 @@ export function RoutesBottom() {
 
                 }}
             />
-            <Tab.Screen
-                name="Matriz"
-                component={Matriz}
-                options={{
-                    headerShown: false,
-                    tabBarIcon:({color, size, focused}) =>{
-                        return <Ionicons name='school' size={30} color='#dddddd'/>
-                    }
-
-                }}
-            />
         </Tab.Navigator>
     );
 }
@@ -56,6 +46,11 @@ export function Routes() {
             <Stack.Screen
                 name="SignIn"
                 component={SignIn}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Register"
+                component={Register}
                 options={{ headerShown: false }}
             />
             <Stack.Screen

@@ -1,19 +1,30 @@
 # Restaurante App
 
-### :rocket: Funcionalidades
+### Funcionalidades
 
-O Portal do Aluno Mobile oferece as seguintes funcionalidades:
+O Restaurante oferece as seguintes funcionalidades:
 
-* Visualização das notas do semestre atual;
-* Visualização das notas de todo o período letivo;
-* Cálculo automático da média ponderada do aluno;
-* Interface intuitiva e fácil de usar.
+* Criar mesas e itens do cardápio
+* Criar comanda e adicionar itens na comanda, assim como fechar
+* Visualizar ordens de produção
+* Atualizar ordens de produção
+* Visualizar comanda em detalhes
+* Visualizar relatório de venda do dia
 
 
 ### Run project App:
 ```
 cd restauranteapp
-npm install -g expo-cli.
+npm install -g expo-cli
 npm install
-npx expo start or expo start
+```
+
+Rodar o projeto e poder abrir o app
+```
+npx expo start
+```
+
+Abrir web direto
+```
+npx expo start --web
 ```

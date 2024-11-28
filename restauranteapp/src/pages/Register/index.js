@@ -5,7 +5,6 @@ import base64 from 'react-native-base64'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { postLogin } from '../../services/Autenticacao/Post';
-import Checkbox from 'expo-checkbox';
 import Toast from 'react-native-toast-message';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import BackButton from '../../components/BackButton';
@@ -14,7 +13,6 @@ export default function SignIn() {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
-  const [isChecked, setChecked] = React.useState(true);
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
   const navigation = useNavigation()
 
@@ -49,7 +47,7 @@ export default function SignIn() {
     const encoded = base64.encode(username + ":" + password);
     const response = await postLogin(encoded)
     const json = await response.json();
-
+    console.log(json)
     if (response.ok) {
       await AsyncStorage.setItem('session', json.session)
       await AsyncStorage.setItem('name', json.name)
@@ -95,15 +93,11 @@ export default function SignIn() {
         <TouchableOpacity style={isLoading ? styles.buttonLoading : styles.button} onPress={getSession} disabled={isLoading}>
           {isLoading ? <ActivityIndicator size={40} style={styles.activityIndicator} color="#000000" />
             : <Text style={styles.buttonText}>
-              Acessar
+              Registrar
             </Text>
           }
         </TouchableOpacity>
-        <View style={styles.checkboxSave}>
-          <Checkbox style={styles.checkbox} value={isChecked} onValueChange={setChecked} />
-          <Text style={styles.paragraph}>Salvar login</Text>
-        </View>
-
+        
       </Animatable.View>
 
     </View>

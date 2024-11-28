@@ -22,18 +22,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mascdriver.portalaluno"
+      "bundleIdentifier": "com.dev.restauranteapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/ico.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.mascdriver.portalaluno",
+      "package": "com.dev.restauranteapp",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
-      "favicon": "./assets/ico-uffs.png"
+      "favicon": "./assets/ico.png"
     },
     "extra": {
       "eas": {

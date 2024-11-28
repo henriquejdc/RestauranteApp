@@ -1,7 +1,7 @@
 import { API_URL } from "../constants"
 
 export const postLogin = async (encoded) => {
-    return fetch(`${API_URL}/login`, {
+    return fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
             'accept': 'application/json',

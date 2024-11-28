@@ -30,7 +30,7 @@ export default function Welcome() {
                 <Animatable.Image
                     animation='flipInY'
                     source={require('../../assets/logo_fundo.png')}
-                    style={{ width: '100%', height: '80%' }}
+                    style={{ width: '110%', height: '110%' }}
                     resizeMode='contain' />
             </View>
             <Animatable.View
@@ -39,10 +39,14 @@ export default function Welcome() {
                 delay={600}
             >
                 {/* <Notification /> */}
-                <Text style={styles.title}>Portal do Aluno UFFS.</Text>
-                <Text style={styles.text}>Faça o login para começar</Text>
+                <Text style={styles.title}>Restaurante Chapecó</Text>
+
                 <TouchableOpacity style={styles.button} onPress={async () => await AsyncStorage.getItem('session') ? navigation.navigate('Home') : navigation.navigate('SignIn')}>
                     <Text style={styles.buttonText}>Acessar</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button2} onPress={async () => await AsyncStorage.getItem('session') ? navigation.navigate('Home') : navigation.navigate('Register')}>
+                    <Text style={styles.buttonText}>Registrar</Text>
                 </TouchableOpacity>
             </Animatable.View>
         </View>
@@ -84,6 +88,17 @@ const styles = StyleSheet.create({
         width: '60%',
         alignSelf: 'center',
         bottom: '15%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    button2: {
+        position: 'absolute',
+        backgroundColor: '#00693E',
+        borderRadius: 50,
+        paddingVertical: 8,
+        width: '60%',
+        alignSelf: 'center',
+        bottom: '30%',
         alignItems: 'center',
         justifyContent: 'center'
     },
