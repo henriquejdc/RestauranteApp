@@ -2,10 +2,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import  Ionicons  from '@expo/vector-icons/Ionicons'
 import Welcome from "../pages/Welcome";
-import SignIn from "../pages/SignIn";
+import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
-import Matriz from "../pages/Matriz";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -44,8 +43,8 @@ export function Routes() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="SignIn"
-                component={SignIn}
+                name="Login"
+                component={Login}
                 options={{ headerShown: false }}
             />
             <Stack.Screen

@@ -1,69 +1,46 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, FlatList,
-  SafeAreaView, RefreshControl, ActivityIndicator
+  View, StyleSheet, SafeAreaView, TouchableOpacity, Text
 } from 'react-native';
 import Header from '../../components/Header';
-import Ccr from '../../components/Ccr';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { getApiNotasSemestre } from '../../services/Aluno/Get';
-import Toast from 'react-native-toast-message';
 
 
 export default function Home() {
-  const [notas, setNotas] = React.useState([])
   const [nameUser, setName] = React.useState('')
-  const [refreshing, setRefreshing] = React.useState(true);
   const navigation = useNavigation()
 
   const getNameUser = async () => {
-    const name = await AsyncStorage.getItem('name')
-    setName(name.split(' ')[0])
-  }
-
-  const getNotas = async () => {
-    setRefreshing(true)
-    const session = await AsyncStorage.getItem('session')
-    const response = await getApiNotasSemestre()
-    const json = await response.json()
-    if (response.ok) {
-      setNotas(json);
-      setRefreshing(false)
-    }
-    else {
-      console.log(json)
-      Toast.show({
-        type: 'error',
-        text1: 'Sessão expirada!',
-        text2: 'Por favor, efetue o login novamente.'
-      });
-      AsyncStorage.removeItem('session').then(() => navigation.navigate('Welcome'))
+    const name = await AsyncStorage.getItem('email')
+    setName(name);
+    const token = await AsyncStorage.getItem('token');
+    if (token === null) {
+        navigation.navigate('Home')
     }
   }
 
   React.useEffect(() => {
-    getNotas();
     getNameUser();
   }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentHeader}>
         <Header name={nameUser} />
       </View>
-
-      <Text style={styles.titlePage}>Notas do semestre</Text>
+      
       <View style={styles.content}>
-        {
-          refreshing ?
-            <ActivityIndicator size={75} style={styles.activityIndicator} color="#000000" />
-            :
-            <FlatList style={styles.list} data={notas} keyExtractor={(item) => String(item.id)}
-              showsVerticalScrollIndicator={false} renderItem={({ item }) => <Ccr data={item} navigation={navigation} />}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={getNotas} style={styles.list} />
-              } />
-        }
+
+        <Text style={styles.titlePage}>Tipo de acesso</Text>
+        <TouchableOpacity style={styles.button} onPress={async () => navigation.navigate('Cliente')}>
+            <Text style={styles.buttonText}>Cliente</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button2} onPress={async () => navigation.navigate('Funcionario')}>
+            <Text style={styles.buttonText}>Funcionário</Text>
+        </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );
@@ -73,21 +50,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#00693E'
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    margin: 14
-  },
   titlePage: {
-    fontSize: 18,
+    fontSize: 26,
     fontWeight: 'bold',
     margin: 14,
-    color: '#FFF',
-
-  },
-  list: {
-    marginStart: 14,
-    marginEnd: 14,
+    color: '#00693E',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   activityIndicator: {
     flex: 1,
@@ -105,5 +75,32 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingStart: '5%',
-  }
+  },
+  button: {
+      position: 'absolute',
+      backgroundColor: '#00693E',
+      borderRadius: 50,
+      paddingVertical: 8,
+      width: '60%',
+      alignSelf: 'center',
+      bottom: '30%',
+      alignItems: 'center',
+      justifyContent: 'center'
+  },
+  button2: {
+      position: 'absolute',
+      backgroundColor: '#00693E',
+      borderRadius: 50,
+      paddingVertical: 8,
+      width: '60%',
+      alignSelf: 'center',
+      bottom: '50%',
+      alignItems: 'center',
+      justifyContent: 'center'
+  },
+  buttonText: {
+      fontSize: 18,
+      color: '#fff',
+      fontWeight: 'bold'
+  } 
 })

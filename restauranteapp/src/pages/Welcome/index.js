@@ -4,10 +4,18 @@ import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Updates from 'expo-updates';
-import Notification from '../../components/Notification';
 
 export default function Welcome() {
     const navigation = useNavigation()
+    const [tokenExists, setTokenExists] = React.useState(false)
+
+    const checkToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            setTokenExists(!!token);
+        } catch (error) {}
+    };
+
     const fetchUpdate = async () => {
         try {
             const update = await Updates.checkForUpdateAsync();
@@ -16,12 +24,11 @@ export default function Welcome() {
                 await Updates.fetchUpdateAsync();
                 await Updates.reloadAsync();
             }
-        } catch (error) {
-            // You can also add an alert() to see the error message in case of an error when fetching updates.
-        }
+        } catch (error) { }
     }
     React.useEffect(() => {
         fetchUpdate();
+        checkToken();
     }, [])
 
     return (
@@ -38,14 +45,13 @@ export default function Welcome() {
                 animation='fadeInUp'
                 delay={600}
             >
-                {/* <Notification /> */}
                 <Text style={styles.title}>Restaurante Chapecó</Text>
 
-                <TouchableOpacity style={styles.button} onPress={async () => await AsyncStorage.getItem('session') ? navigation.navigate('Home') : navigation.navigate('SignIn')}>
+                <TouchableOpacity style={styles.button} onPress={async () => await AsyncStorage.getItem('token') ? navigation.navigate('Home') : navigation.navigate('Login')}>
                     <Text style={styles.buttonText}>Acessar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button2} onPress={async () => await AsyncStorage.getItem('session') ? navigation.navigate('Home') : navigation.navigate('Register')}>
+                <TouchableOpacity style={[styles.button2, { display: tokenExists ? 'none' : 'flex' }]} onPress={async () => navigation.navigate('Register')}>
                     <Text style={styles.buttonText}>Registrar</Text>
                 </TouchableOpacity>
             </Animatable.View>

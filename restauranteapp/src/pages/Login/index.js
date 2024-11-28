@@ -1,17 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, Pressable } from 'react-native';
 import * as Animatable from 'react-native-animatable'
-import base64 from 'react-native-base64'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { postLogin } from '../../services/Autenticacao/Post';
+import { postLogin } from '../../services/Autenticacao';
 import Checkbox from 'expo-checkbox';
 import Toast from 'react-native-toast-message';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import BackButton from '../../components/BackButton';
 
-export default function SignIn() {
-  const [username, setUsername] = React.useState('');
+export default function Login() {
+  const [email, setemail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
   const [isChecked, setChecked] = React.useState(true);
@@ -19,22 +18,22 @@ export default function SignIn() {
   const navigation = useNavigation()
 
   React.useEffect(() => {
-    getUsername()
+    getemail()
     getPassword()
   }, [])
 
-  async function getUsername() {
-    setUsername(await AsyncStorage.getItem('username'))
+  async function getemail() {
+    setemail(await AsyncStorage.getItem('email'))
   }
   async function getPassword() {
     setPassword(await AsyncStorage.getItem('password'))
   }
 
   const getSession = async () => {
-    if (!username) {
+    if (!email) {
       Toast.show({
         type: 'error',
-        text1: 'Você precisa inserir o username!',
+        text1: 'Você precisa inserir o email!',
       });
       return
     }
@@ -46,27 +45,24 @@ export default function SignIn() {
       return
     }
     setLoading(true);
-    const encoded = base64.encode(username + ":" + password);
-    const response = await postLogin(encoded)
-    const json = await response.json();
+    const response = await postLogin(email, password);
+    if (response.status === 200) {
+      const json = await response.json();
+      await AsyncStorage.setItem('token', json.token)
 
-    if (response.ok) {
-      await AsyncStorage.setItem('session', json.session)
-      await AsyncStorage.setItem('name', json.name)
       if (isChecked) {
-        await AsyncStorage.setItem('username', username)
+        await AsyncStorage.setItem('email', email)
         await AsyncStorage.setItem('password', password)
       }
       else {
-        await AsyncStorage.removeItem('username')
+        await AsyncStorage.removeItem('email')
         await AsyncStorage.removeItem('password')
       }
       navigation.navigate('Home')
     } else {
       Toast.show({
         type: 'error',
-        text1: 'Ocorreu um erro',
-        text2: json.detail
+        text1: 'Ocorreu um erro. Status: ' + response.status,
       });
     }
     setLoading(false);
@@ -82,7 +78,7 @@ export default function SignIn() {
       <Animatable.View animation='fadeInUp' style={styles.containerForm}>
         <Text style={styles.title}>Email</Text>
         <TextInput
-          onChangeText={text => setUsername(text)} defaultValue={username} placeholder='Email' style={styles.input} autoCapitalize='none' />
+          onChangeText={text => setemail(text)} defaultValue={email} placeholder='Email' style={styles.input} autoCapitalize='none' />
 
         <Text style={styles.title}>Senha</Text>
         <View style={styles.inputPassword}>

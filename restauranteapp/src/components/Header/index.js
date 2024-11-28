@@ -12,14 +12,13 @@ export default function Header({ name }) {
         <View style={styles.container}>
             <Animatable.View animation='fadeInLeft' delay={500}  style={styles.content}>
                 <Text style={styles.username}>Seja bem-vindo(a) 
-                <Text style={{textTransform: 'capitalize'}}> {name}</Text>
+                    <Text style={{textTransform: 'capitalize'}}> {name} </Text>
                 </Text>
-
                 <TouchableOpacity activeOpacity={0.9} style={styles.buttonLogOut} 
                 onPress={async () => {
-                    await AsyncStorage.removeItem('session')
+                    await AsyncStorage.removeItem('token')
                     await AsyncStorage.removeItem('name')
-                    navigation.navigate('Welcome')
+                    navigation.navigate('Bem vindo')
                 }}
                 >
                     <Feather name='log-out' size={20} color="#fff" />
