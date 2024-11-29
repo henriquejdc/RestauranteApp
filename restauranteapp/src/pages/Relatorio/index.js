@@ -5,13 +5,27 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
+    SafeAreaView,
 } from 'react-native';
 import { getRelatorioVendas } from '../../services/Relatorios';
 import Toast from 'react-native-toast-message';
+import Header from '../../components/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import BackButton from '../../components/BackButton';
 
 export default function Relatorio({ navigation }) {
     const [relatorio, setRelatorio] = useState({});
     const [detalhes, setDetalhes] = useState([]);
+    const [nameUser, setName] = React.useState('')
+
+    const getNameUser = async () => {
+        const name = await AsyncStorage.getItem('name')
+        setName(name);
+        const token = await AsyncStorage.getItem('token');
+        if (token === null) {
+            navigation.navigate('Home')
+        }
+    }
 
     const fetchRelatorio = async () => {
         const response = await getRelatorioVendas();
@@ -34,12 +48,13 @@ export default function Relatorio({ navigation }) {
 
     useEffect(() => {
         fetchRelatorio();
+        getNameUser();
     }, []);
 
     const renderItem = ({ item }) => (
         <View style={styles.item}>
-            <Text style={styles.text}>Comanda ID: {item.comanda_id}</Text>
-            <Text style={styles.text}>Total: R$ {item.total.toFixed(2)}</Text>
+            <Text style={styles.text}><b>Comanda ID: </b>{item.comanda_id}</Text>
+            <Text style={styles.text}><b>Total: </b>R$ {item.total.toFixed(2)}</Text>
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => verDetalhesComanda(item.comanda_id)}
@@ -50,22 +65,58 @@ export default function Relatorio({ navigation }) {
     );
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Relatório de Vendas</Text>
-            <Text style={styles.totalText}>Total de Vendas: R$ {relatorio.totalVendas?.toFixed(2)}</Text>
-            <FlatList
-                data={detalhes}
-                keyExtractor={(item) => String(item.comanda_id)}
-                renderItem={renderItem}
-                ListEmptyComponent={<Text style={styles.emptyText}>Nenhuma venda registrada</Text>}
-            />
-        </View>
+        <SafeAreaView style={styles.container}>
+            <BackButton />
+            <View style={styles.contentHeader}>
+                <Header name={nameUser} />
+            </View>
+
+            <View style={styles.content}>
+                <Text style={styles.titlePage}>Relatório de Vendas</Text>
+                <Text style={styles.totalText}>Total de Vendas: R$ {relatorio.totalVendas?.toFixed(2)}</Text>
+                <FlatList
+                    data={detalhes}
+                    keyExtractor={(item) => String(item.comanda_id)}
+                    renderItem={renderItem}
+                    ListEmptyComponent={<Text style={styles.emptyText}>Nenhuma venda registrada</Text>}
+                />
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-    title: { fontSize: 22, fontWeight: 'bold', marginBottom: 10 },
+    container: {
+        flex: 1,
+        backgroundColor: '#00693E'
+    },
+    titlePage: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        margin: 14,
+        color: '#00693E',
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    activityIndicator: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    contentHeader: {
+        flex: 1,
+        backgroundColor: "#00693E",
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    content: {
+        flex: 5,
+        backgroundColor: '#FFF',
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        paddingStart: '5%',
+        paddingRight: '5%',
+    },
     totalText: { fontSize: 18, fontWeight: 'bold', marginBottom: 20 },
     item: {
         padding: 15,

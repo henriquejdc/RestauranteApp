@@ -5,13 +5,29 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
+    SafeAreaView,
 } from 'react-native';
 import { getOrdensProducao, putOrdemProducaoStatus } from '../../services/OrdensProducao';
 import Toast from 'react-native-toast-message';
+import Header from '../../components/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import BackButton from '../../components/BackButton';
 
 export default function OrdensProducao({ route }) {
     const { setor } = route.params;
     const [ordens, setOrdens] = useState([]);
+    const [nameUser, setName] = React.useState('')
+    const navigation = useNavigation()
+
+    const getNameUser = async () => {
+        const name = await AsyncStorage.getItem('name')
+        setName(name);
+        const token = await AsyncStorage.getItem('token');
+        if (token === null) {
+            navigation.navigate('Home')
+        }
+    }
 
     const fetchOrdens = async () => {
         const response = await getOrdensProducao(setor);
@@ -46,16 +62,17 @@ export default function OrdensProducao({ route }) {
 
     useEffect(() => {
         fetchOrdens();
+        getNameUser();
     }, []);
 
     const renderOrdem = ({ item }) => (
         <View style={styles.ordem}>
-            <Text style={styles.text}>Item: {item.item_cardapio.nome}</Text>
-            <Text style={styles.text}>Categoria: {item.item_cardapio.categoria}</Text>
-            <Text style={styles.text}>Quantidade: {item.quantidade}</Text>
-            <Text style={styles.text}>Setor: {item.setor}</Text>
-            <Text style={styles.text}>Status: {item.status}</Text>
-            <Text style={styles.text}>Mesa: {item.comanda.mesa_id}</Text>
+            <Text style={styles.text}><b>Item: </b>{item.item_cardapio.nome}</Text>
+            <Text style={styles.text}><b>Categoria: </b>{item.item_cardapio.categoria}</Text>
+            <Text style={styles.text}><b>Quantidade: </b>{item.quantidade}</Text>
+            <Text style={styles.text}><b>Setor: </b>{item.setor}</Text>
+            <Text style={styles.text}><b>Status: </b>{item.status}</Text>
+            <Text style={styles.text}><b>Mesa: </b>{item.comanda.mesa_id}</Text>
 
             <View style={styles.actions}>
                 <TouchableOpacity
@@ -81,21 +98,57 @@ export default function OrdensProducao({ route }) {
     );
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Ordens de Produção</Text>
-            <FlatList
-                data={ordens}
-                keyExtractor={(item) => String(item.id)}
-                renderItem={renderOrdem}
-                ListEmptyComponent={<Text style={styles.emptyText}>Nenhuma ordem encontrada</Text>}
-            />
-        </View>
+        <SafeAreaView style={styles.container}>
+            <BackButton />
+            <View style={styles.contentHeader}>
+                <Header name={nameUser} />
+            </View>
+
+            <View style={styles.content}>
+                <Text style={styles.titlePage}>Ordens de Produção</Text>
+                <FlatList
+                    data={ordens}
+                    keyExtractor={(item) => String(item.id)}
+                    renderItem={renderOrdem}
+                    ListEmptyComponent={<Text style={styles.emptyText}>Nenhuma ordem encontrada</Text>}
+                />
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-    title: { fontSize: 22, fontWeight: 'bold', marginBottom: 10 },
+    container: {
+        flex: 1,
+        backgroundColor: '#00693E'
+    },
+    titlePage: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        margin: 14,
+        color: '#00693E',
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    activityIndicator: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    contentHeader: {
+        flex: 1,
+        backgroundColor: "#00693E",
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    content: {
+        flex: 5,
+        backgroundColor: '#FFF',
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        paddingStart: '5%',
+        paddingRight: '5%',
+    },
     ordem: {
         padding: 15,
         borderRadius: 5,

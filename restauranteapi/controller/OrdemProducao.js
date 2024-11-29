@@ -56,6 +56,7 @@ async function listarOrdens(req, res) {
         const ordens = await ordemProducao.findAll({
             where: { setor },
             include: ["comanda", "item_cardapio"],
+            order: [["id", "DESC"]],
         });
         res.status(200).json(ordens);
     } catch (error) {

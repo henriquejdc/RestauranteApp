@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Updates from 'expo-updates';
 
@@ -10,10 +10,11 @@ export default function Welcome() {
     const [tokenExists, setTokenExists] = React.useState(false)
 
     const checkToken = async () => {
+        console.log('Checking token')
         try {
             const token = await AsyncStorage.getItem('token');
             setTokenExists(token);
-        } catch (error) {}
+        } catch (error) { }
     };
 
     const fetchUpdate = async () => {
@@ -30,6 +31,13 @@ export default function Welcome() {
         fetchUpdate();
         checkToken();
     }, [])
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            checkToken();
+        }, [])
+    );
 
     return (
         <View style={styles.container}>
