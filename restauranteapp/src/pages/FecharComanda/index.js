@@ -12,15 +12,17 @@ import Header from '../../components/Header';
 import Toast from 'react-native-toast-message';
 import { getComanda } from '../../services/Comandas';
 import { useNavigation } from '@react-navigation/native';
+import BackButton from '../../components/BackButton';
 
-export default function FecharComanda() {
+export default function FecharComanda({ route }) {
+    const { comanda_id = null } = route.params || {};
     const navigation = useNavigation()
 
     const [nameUser, setName] = useState('');
     const [comanda, setComanda] = useState(null);
 
     const getNameUser = async () => {
-        const name = await AsyncStorage.getItem('email');
+        const name = await AsyncStorage.getItem('name');
         setName(name);
         const token = await AsyncStorage.getItem('token');
         if (token === null) {
@@ -29,12 +31,19 @@ export default function FecharComanda() {
     };
 
     const fetchComanda = async () => {
-        const comanda_id = await AsyncStorage.getItem('comanda_id');
-        const response = await getComanda(comanda_id);
+        let response;
+        let isClient = false;
+        if ( comanda_id ) {
+            response = await getComanda(comanda_id);
+        } else {
+            const comanda_id_cache = await AsyncStorage.getItem('comanda_id');
+            response = await getComanda(comanda_id_cache);
+            isClient = true;
+        }
         if (response.status === 200) {
             const comanda = await response.json();
             setComanda(comanda);
-            await AsyncStorage.removeItem('comanda_id')
+            if (isClient) await AsyncStorage.removeItem('comanda_id');
         } else {
             Toast.show({
                 type: 'error',
@@ -50,6 +59,7 @@ export default function FecharComanda() {
 
     return (
         <SafeAreaView style={styles.container}>
+            {comanda_id && <BackButton />}
             <View style={styles.contentHeader}>
                 <Header name={nameUser} />
             </View>

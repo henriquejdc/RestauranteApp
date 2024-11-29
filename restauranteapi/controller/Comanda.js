@@ -219,6 +219,10 @@ async function buscarTodas(req, res) {
  *                   items:
  *                     type: object
  *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: ID da ordem de produção.
+ *                         example: 101
  *                       item_id:
  *                         type: integer
  *                         description: ID do item consumido.

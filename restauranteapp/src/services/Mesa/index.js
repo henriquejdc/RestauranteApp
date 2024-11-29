@@ -26,7 +26,7 @@ export const deleteMesa = async (id) => {
     })
 }
 
-export const postMesa = async (numero,  status) => {
+export const postMesa = async (numero) => {
     return fetch(`${API_URL}/mesas`, {
         method: 'POST',
         headers: {
@@ -36,7 +36,7 @@ export const postMesa = async (numero,  status) => {
         },
         body: JSON.stringify({
             'numero': numero,
-            'status': status,
+            'status': 'livre',
         })
     })
 }

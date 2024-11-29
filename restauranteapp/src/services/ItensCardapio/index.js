@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from "../constants"
 
-export const deleteItensCardipio = async (id) => {
+export const deleteItemCardapio = async (id) => {
     return fetch(`${API_URL}/itens-cardapio/${id}`, {
         method: 'DELETE',
         headers: {
@@ -12,7 +12,7 @@ export const deleteItensCardipio = async (id) => {
     })
 }
 
-export const postItensCardipio = async (nome, categoria, preco) => {
+export const postItemCardapio = async (novoItem) => {
     return fetch(`${API_URL}/itens-cardapio`, {
         method: 'POST',
         headers: {
@@ -20,15 +20,11 @@ export const postItensCardipio = async (nome, categoria, preco) => {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + await AsyncStorage.getItem('token'),
         },
-        body: JSON.stringify({
-            'nome': nome,
-            'categoria': categoria,
-            'preco': preco,
-        })
+        body: JSON.stringify(novoItem)
     })
 }
 
-export const getItensCardipio = async (categoria) => {
+export const getItensCardapio = async (categoria) => {
     const url = `${API_URL}/itens-cardapio${categoria ? `?categoria=${categoria}` : ''}`
 
     return fetch(

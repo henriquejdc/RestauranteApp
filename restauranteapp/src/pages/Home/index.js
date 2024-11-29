@@ -12,7 +12,7 @@ export default function Home() {
   const navigation = useNavigation()
 
   const getNameUser = async () => {
-    const name = await AsyncStorage.getItem('email')
+    const name = await AsyncStorage.getItem('name')
     setName(name);
     const token = await AsyncStorage.getItem('token');
     if (token === null) {
@@ -37,7 +37,7 @@ export default function Home() {
             <Text style={styles.buttonText}>Cliente</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button2} onPress={async () => navigation.navigate('Funcionario')}>
+        <TouchableOpacity style={styles.button2} onPress={async () => navigation.navigate('AdminPanel')}>
             <Text style={styles.buttonText}>Funcionário</Text>
         </TouchableOpacity>
 

@@ -12,7 +12,7 @@ export default function Welcome() {
     const checkToken = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            setTokenExists(!!token);
+            setTokenExists(token);
         } catch (error) {}
     };
 

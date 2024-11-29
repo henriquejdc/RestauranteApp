@@ -40,6 +40,9 @@ const SECRET_KEY = process.env.SECRET_KEY;
  *                 token:
  *                   type: string
  *                   description: Token JWT gerado.
+ *                 nome:
+ *                   type: string
+ *                   description: Nome do usuário.
  *                 usuario:
  *                   type: integer
  *                   description: Id do usuário.
@@ -59,7 +62,7 @@ async function autenticar(req, res) {
         if (!senhaValida) return res.status(401).send("Senha inválida.");
 
         const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: "7d" });
-        res.status(200).json({ "user": user.id, "token": token });
+        res.status(200).json({ "user": user.id, "nome": user.nome, "token": token });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

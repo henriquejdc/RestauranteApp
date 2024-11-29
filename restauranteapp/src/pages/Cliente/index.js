@@ -11,8 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '../../components/BackButton';
 import Header from '../../components/Header';
 import Toast from 'react-native-toast-message';
-import { getMesas } from '../../services/Mesas';
-import { getItensCardipio } from '../../services/ItensCardapio';
+import { getMesas } from '../../services/Mesa';
+import { getItensCardapio } from '../../services/ItensCardapio';
 import { postComanda, putComandaAdicionaItem, putComandaFechar } from '../../services/Comandas';
 import { useNavigation } from '@react-navigation/native';
 
@@ -27,7 +27,7 @@ export default function MesasLivres() {
     const [quantidade, setQuantidade] = useState(1);
 
     const getNameUser = async () => {
-        const name = await AsyncStorage.getItem('email')
+        const name = await AsyncStorage.getItem('name')
         setName(name);
         const token = await AsyncStorage.getItem('token');
         if (token === null) {
@@ -64,7 +64,7 @@ export default function MesasLivres() {
         var pratos = [];
         var bebidas = [];
 
-        const response_pratos = await getItensCardipio("prato");
+        const response_pratos = await getItensCardapio("prato");
         if (response_pratos.status === 200) {
             pratos = await response_pratos.json();
         }
@@ -75,7 +75,7 @@ export default function MesasLivres() {
             });
         }
 
-        const response_bebidas = await getItensCardipio("bebida");
+        const response_bebidas = await getItensCardapio("bebida");
         if (response_bebidas.status === 200) {
             bebidas = await response_bebidas.json();
         }
@@ -189,6 +189,11 @@ export default function MesasLivres() {
 
                 <Text style={styles.title}>Selecione uma Mesa</Text>
                 <FlatList
+                    contentContainerStyle={{ 
+                        justifyContent: 'center',
+                        flexGrow: 1,
+                        height: 50 
+                    }}
                     data={mesas}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
