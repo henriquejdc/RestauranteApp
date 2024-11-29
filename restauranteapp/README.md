@@ -1,16 +1,5 @@
-# Restaurante App
-
-### Funcionalidades
-
-O Restaurante oferece as seguintes funcionalidades:
-
-* Criar mesas e itens do cardápio
-* Criar comanda e adicionar itens na comanda, assim como fechar
-* Visualizar ordens de produção
-* Atualizar ordens de produção
-* Visualizar comanda em detalhes
-* Visualizar relatório de venda do dia
-
+### Restaurante App
+Ncessário ter o node instalado em sua máquina
 
 ### Run project App:
 ```
